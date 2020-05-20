@@ -12,3 +12,5 @@ include:
 
     {%- endif %}
   - mongodb.server.config
+
+  - mongodb.server.users

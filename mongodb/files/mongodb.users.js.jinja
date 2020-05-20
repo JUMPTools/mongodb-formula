@@ -1,0 +1,23 @@
+// #########################################################
+// # File managed by Salt. Changes risk being overwritten.
+// #########################################################
+
+// MongoDB server user creation script
+
+{% from 'mongodb/map.jinja' import mongodb with context %}
+
+hMongo = new Mongo('localhost:{{ mongodb.server.mongod.conf.net.port }}')
+
+{% for user, user_info in mongodb.server.users.iteritems() %}
+db = hMongo.getDB('{{ user_info.db }}');
+
+db.createUser({
+    user: '{{ user }}',
+    pwd: '{{ user_info.password }}',
+    roles: [
+    {%- for role in user_info.roles -%}
+        {role: '{{ role.role }}', db: '{{ role.db }}'}
+    {%- endfor -%}
+    ]
+});
+{% endfor %}

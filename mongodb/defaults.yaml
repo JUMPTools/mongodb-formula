@@ -108,6 +108,14 @@ mongodb:
           LimitMEMLOCK: infinity
           TasksMax: infinity
           TasksAccounting: false
+
+    users:
+      admin:
+        db: 'admin'
+        password: 'admin'
+        roles:
+          - {role: 'userAdminAnyDatabase', db: 'admin'}
+
     shell:
       package: mongodb-org-shell
       mongorc: /etc/mongorc.js
