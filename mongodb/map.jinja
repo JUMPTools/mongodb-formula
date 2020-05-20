@@ -29,6 +29,20 @@
     base='mongodb',
 ) %}
 
+
+### Drop replication & sharding configuration items if
+### mongodb.server.mongod.standalone is true in pillar
+{%- if 'standalone' in m.server.mongod -%}
+    {%- if  m.server.mongod.standalone is sameas true -%}
+        {%- for item in ['replication', 'sharding'] -%}
+            {%- do m.server.mongod.conf.pop(item) -%}
+        {%- endfor -%}
+    {%- endif -%}
+
+    {%- do m.server.mongod.pop('standalone') -%}
+{%- endif -%}
+
+
 #### archives
 {%- set name = m.server.url.split('/')[-1]|string %}
 {%- do m.server.update({ 'name': name|replace('RELEASE', m.server.version),
